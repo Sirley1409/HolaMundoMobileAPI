@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HolaMundoAPi.Data;
 using HolaMundoAPi.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using HolaMundoAPi.Data.Dto.HolaMundoAPi.API.Data.Dto;
 
 namespace HolaMundoAPi.Controllers
 {
@@ -17,31 +18,33 @@ namespace HolaMundoAPi.Controllers
     public class ClientsController : ControllerBase
     {
         private readonly HolaMundoDbContext _context;
+        private readonly Random random;
 
         public ClientsController(HolaMundoDbContext context)
         {
             _context = context;
+            random = new Random();
         }
 
         // GET: api/Clients
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Client>>> GetClient()
         {
-          if (_context.Clients == null)
-          {
-              return NotFound();
-          }
+            if (_context.Clients == null)
+            {
+                return NotFound();
+            }
             return await _context.Clients.ToListAsync();
         }
 
         // GET: api/Clients/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Client>> GetClient(long id)
+        public async Task<ActionResult<ClientDetailDto>> GetClient(long id)
         {
-          if (_context.Clients == null)
-          {
-              return NotFound();
-          }
+            if (_context.Clients == null)
+            {
+                return NotFound();
+            }
             var client = await _context.Clients.FindAsync(id);
 
             if (client == null)
@@ -49,7 +52,47 @@ namespace HolaMundoAPi.Controllers
                 return NotFound();
             }
 
-            return client;
+            var clientDetail = CreateClientDetails(client);
+
+            return clientDetail;
+        }
+
+        private ClientDetailDto CreateClientDetails(Client client)
+        {
+            var clientDetail = new ClientDetailDto
+            {
+                Id = client.Id,
+                Name = client.Name,
+                Dna = client.Dna,
+                Latitude = client.Latitude,
+                Longitude = client.Longitude,
+                Age = random.Next(15, 65),
+                Weight = random.Next(40, 120),
+                Height = random.Next(150, 210)
+            };
+            clientDetail.LifeExpectancy = CalculateLifeExpectancy(clientDetail.Age, clientDetail.Weight, clientDetail.Height);
+            return clientDetail;
+        }
+
+        private double CalculateLifeExpectancy(int age, int weight, int height)
+        {
+            var BaseLifeExpectancy = 80.0; // Example base life expectancy in years
+            var AgeFactor = 0.02; // Example factor for age
+            var WeightFactor = 0.01; // Example factor for weight
+            var HeightFactor = 0.005; // Example factor for height
+
+            // Calculate the adjustments based on age, weight, and height
+            double ageAdjustment = (age - 30) * AgeFactor;
+            double weightAdjustment = (weight - 70) * WeightFactor;
+            double heightAdjustment = (height - 170) * HeightFactor;
+
+            // Calculate the final life expectancy based on adjustments
+            double adjustedLifeExpectancy = BaseLifeExpectancy + ageAdjustment - weightAdjustment - heightAdjustment;
+
+            // Calculate the percentage of life expectancy
+            double percentage = (age / adjustedLifeExpectancy) * 100;
+
+            return Math.Round(percentage);
         }
 
         // PUT: api/Clients/5
@@ -88,10 +131,10 @@ namespace HolaMundoAPi.Controllers
         [HttpPost]
         public async Task<ActionResult<Client>> PostClient(Client client)
         {
-          if (_context.Clients == null)
-          {
-              return Problem("Entity set 'HolaMundoDbContext.Client'  is null.");
-          }
+            if (_context.Clients == null)
+            {
+                return Problem("Entity set 'DatabaseContext.Client'  is null.");
+            }
             _context.Clients.Add(client);
             await _context.SaveChangesAsync();
 
@@ -124,3 +167,5 @@ namespace HolaMundoAPi.Controllers
         }
     }
 }
+
+
