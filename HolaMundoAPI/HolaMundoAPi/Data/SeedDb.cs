@@ -1,4 +1,5 @@
-﻿using HolaMundoAPi.Enumerations;
+﻿using HolaMundoAPi.Data.Models;
+using HolaMundoAPi.Enumerations;
 
 namespace HolaMundoAPi.Data
 {
@@ -39,6 +40,20 @@ namespace HolaMundoAPi.Data
                 this.AddUser("GuestUser", "123", 3);
                 await this.context.SaveChangesAsync();
             }
+            if (!this.context.ClasificacionGastos.Any())
+            {
+                this.AddClasificacionGastos(GastosTipo.Transporte, "Tiquetes");
+                this.AddClasificacionGastos(GastosTipo.Hospedaje,"Hospedaje");
+                this.AddClasificacionGastos(GastosTipo.Alimentacion,"Alimentacion");
+                await this.context.SaveChangesAsync();
+            }
+            if (!this.context.GastosViaje.Any())
+            {
+                this.AddGastosViaje(1,1,"Viaje");
+                this.AddGastosViaje(2,2,"Noche de Hotel");
+                this.AddGastosViaje(3,3,"Desayuno");
+                await this.context.SaveChangesAsync();
+            }
 
         }
 
@@ -66,6 +81,30 @@ namespace HolaMundoAPi.Data
                 UserName = userId,
                 Password = password,
                 RoleId = userRoleId
+            });
+        }
+        private void AddClasificacionGastos(GastosTipo NombreGasto, string Name)
+        {
+            this.context.ClasificacionGastos.Add(new Models.ClasificacionGastos
+            {
+                NombreGasto = NombreGasto,
+                Name = Name
+
+            });
+        }
+        private void AddGastosViaje(long UserId,long ClasificacionGastosId, string ClasificacionGastosP)
+        {
+            this.context.GastosViaje.Add(new Models.GastosViaje
+            {
+                UserId = UserId,
+                ClasificacionGastosId = ClasificacionGastosId,
+                ClasificacionGastosV = ClasificacionGastosP,
+                Fecha = DateTime.Now.AddDays(this.random.Next(1,30)),
+                Valor = this.random.Next(1000,2000000),
+                DetalleGasto = "Paseo"
+                
+
+
             });
         }
 
