@@ -84,7 +84,6 @@ namespace HolaMundoAPi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     ClasificacionGastosId = table.Column<long>(type: "bigint", nullable: false),
-                    ClasificacionGastosV = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Valor = table.Column<int>(type: "int", nullable: false),
                     DetalleGasto = table.Column<string>(type: "nvarchar(max)", nullable: true)

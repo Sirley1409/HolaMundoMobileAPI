@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HolaMundoAPi.Migrations
 {
     [DbContext(typeof(HolaMundoDbContext))]
-    [Migration("20230821201044_AddGastosViaje")]
+    [Migration("20230821202612_AddGastosViaje")]
     partial class AddGastosViaje
     {
         /// <inheritdoc />
@@ -82,9 +82,6 @@ namespace HolaMundoAPi.Migrations
 
                     b.Property<long>("ClasificacionGastosId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("ClasificacionGastosV")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DetalleGasto")
                         .HasColumnType("nvarchar(max)");

@@ -80,9 +80,6 @@ namespace HolaMundoAPi.Migrations
                     b.Property<long>("ClasificacionGastosId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ClasificacionGastosV")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DetalleGasto")
                         .HasColumnType("nvarchar(max)");
 

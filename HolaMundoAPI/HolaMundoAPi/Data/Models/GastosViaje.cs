@@ -7,7 +7,6 @@ namespace HolaMundoAPi.Data.Models
         public long Id { get; set; }
         public long UserId { get; set; }
         public long ClasificacionGastosId { get; set; }
-        public string? ClasificacionGastosV { get; set; }
         public DateTime Fecha { get; set; }
         public int Valor { get; set; }
         public string? DetalleGasto { get; set; }

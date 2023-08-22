@@ -98,10 +98,9 @@ namespace HolaMundoAPi.Data
             {
                 UserId = UserId,
                 ClasificacionGastosId = ClasificacionGastosId,
-                ClasificacionGastosV = ClasificacionGastosP,
                 Fecha = DateTime.Now.AddDays(this.random.Next(1,30)),
                 Valor = this.random.Next(1000,2000000),
-                DetalleGasto = "Paseo"
+                DetalleGasto = ClasificacionGastosP
                 
 
 
